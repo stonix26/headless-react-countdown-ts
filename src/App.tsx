@@ -51,8 +51,6 @@ function App() {
           isValidDate={isValidDate}
           isValidFutureDate={isValidFutureDate}
         />
-
-        <FirstCountdownUI {...spreadAllVal} />
       </div>
 
       {/* Custom hooks usage - spread */}
