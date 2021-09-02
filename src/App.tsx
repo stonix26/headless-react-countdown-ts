@@ -1,26 +1,68 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+
+import Countdown from './components/render-props/Countdown'
+import useCountdown from './components/hooks/use-countdown'
+
+import SimpleCountdown from './components/SimpleCountdown'
+import FirstCountdownUI from './components/FirstCountdownUI'
+import SecondCountdownUI from './components/SecondCountdownUI'
 
 function App() {
+  const date = Number(new Date('2021-12-25'))
+
+  // custom hook usage
+  // pass in the date and get all the values from the hook, throw it to the UI
+  const { timeLeft, isValidDate, isValidFutureDate } = useCountdown(date)
+
+  // same hook, but using spread instead
+  const { ...spreadAllVal } = useCountdown(date)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {/* Basic */}
+      <div className='container'>
+        <p className='title'>Basic</p>
+        <SimpleCountdown date={date} />
+      </div>
+
+      {/* Render prop usage */}
+      <div className='container'>
+        <p className='title'>Render prop usage</p>
+        <Countdown date={date}>
+          {(props) => (
+            <>
+              <FirstCountdownUI {...props} />
+              <SecondCountdownUI {...props} />
+            </>
+          )}
+        </Countdown>
+      </div>
+
+      {/* Custom hooks usage */}
+      <div className='container'>
+        <p className='title'>Custom hook usage</p>
+        <FirstCountdownUI
+          timeLeft={timeLeft}
+          isValidDate={isValidDate}
+          isValidFutureDate={isValidFutureDate}
+        />
+        <SecondCountdownUI
+          timeLeft={timeLeft}
+          isValidDate={isValidDate}
+          isValidFutureDate={isValidFutureDate}
+        />
+
+        <FirstCountdownUI {...spreadAllVal} />
+      </div>
+
+      {/* Custom hooks usage - spread */}
+      <div className='container'>
+        <p className='title'>Custom hook usage - spread</p>
+        <FirstCountdownUI {...spreadAllVal} />
+        <SecondCountdownUI {...spreadAllVal} />
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
